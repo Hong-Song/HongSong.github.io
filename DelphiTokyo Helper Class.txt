@@ -1,0 +1,54 @@
+type
+  TShy = class(TObject)
+  private
+    FPrivate_Name: string;
+  protected
+    FProtected_Name: string;
+  public
+    FPublic_Name: string;
+
+    constructor create;
+  end;
+
+
+implementation
+
+{ TShy }
+
+constructor TShy.create;
+begin
+  FPrivate_Name := 'Private Shy';
+  FProtected_Name := 'Protected Shy';
+  FPublic_Name := 'Public Shy';
+end;
+
+
+
+
+
+ TShyHelper = class helper for TShy
+  public
+    function GetPrivateName: string;
+    function GetProtectedName: string;
+    function GetPublicName: string;
+  end;
+
+implementation
+
+{ TShyHelper }
+
+function TShyHelper.GetPrivateName: string;
+var
+  context1: TRttiContext;
+  type1: TRttiType;
+  field1: TRttiField;
+begin
+  context1 := TRttiContext.Create;
+  type1 := context1.GetType(TShy);
+  field1:= type1.GetField('FPrivate_Name');
+
+  if Assigned(field1) then
+    Result := Field1.GetValue(Self).AsString
+  else
+    Result := 'Null';
+end;
